@@ -1,0 +1,6 @@
+pom.xml
+*.jar
+lib
+*.tar.xz
+*.swp
+

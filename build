@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#set -eu
+
+
+export LEIN_SNAPSHOTS_IN_RELEASE="yes"
+export LEIN_ROOT="yes"
+
+echo "Building jark server"
+mkdir -p classes
+javac -d classes/ src/jark/SystemThreadList.java 
+if [ $? != 0 ]; then 
+    echo "javac not installed, exiting"
+    exit 1
+fi
+echo "Getting dependencies.."
+lein deps && lein jar
+
+
+
+
