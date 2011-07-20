@@ -6,7 +6,8 @@
   (:refer-clojure :exclude [list find alias])
   (:import (java.io File FileNotFoundException))
   (:require jark.cp)
-  (:require jark.pp))
+  (:require jark.pp)
+  (:use clojure.contrib.json))
 
 (defn- namespaces []
   (find-namespaces-on-classpath))
@@ -109,3 +110,21 @@
   (require-ns main-ns)
   (apply (resolve (symbol (str main-ns "/-main"))) args))
 
+(defn cli-json
+  "Run the cli interface for any namespace and return json"
+  ([module]
+     (try
+       (require-ns module)
+       (help module)
+       (catch FileNotFoundException e (println "No such module" e))))
+  ([module command & args]
+     (if (or (= (first args) "help") (= command "help"))
+       (explicit-help module command)
+       (do
+         (require-ns module)
+         (try
+           (let [ret (apply (resolve (symbol (str module "/" command))) args)]
+             (when ret (do
+                         (json-str ret))))
+           (catch IllegalArgumentException e (help module command))
+           (catch NullPointerException e (println "No such command")))))))
