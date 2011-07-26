@@ -6,7 +6,8 @@
   (:import (jark SystemThreadList))
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
   (:import (java.net ServerSocket))
-  (:import (java.util Date)))
+  (:import (java.util Date))
+  (:require jark.ns))
 
 (defn used-mem []
   (let [rt (. Runtime getRuntime)]

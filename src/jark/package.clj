@@ -58,7 +58,6 @@
     (into {} (map #(vector (first %) (second %)) entries))))
 
 (defn search
-  
   [term]
   (let [response (http-get-text-seq *clojars-all-jars-url*)
         entries  (for [line response :when (.contains line term)]
