@@ -84,7 +84,11 @@
         port  (.getLocalPort s)]
     (.close s)
     port))
-    
+
+(defn get-pid []
+  (or (first (.. java.lang.management.ManagementFactory (getRuntimeMXBean) (getName) (split "@")))
+      (System/getProperty "pid")))
+
 (defn -main [port]
   (create-repl-server (random-port))
   (nrepl/start-server (Integer. port))

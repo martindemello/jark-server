@@ -4,7 +4,8 @@
                  [org.clojure/clojure-contrib "1.2.0"]
                  [swank-clojure "1.3.0"]
                  [leiningen "1.1.0"]
-                 [org.clojure/tools.nrepl "0.0.5"]]
+                 [org.clojure/tools.nrepl "0.0.5"]
+                 [recon "0.2.1"]]
 
   :java-source-path "src/jark"
   :aot [jark.vm jark.cp jark.ns jark.swank jark.pp jark.doc jark.package
