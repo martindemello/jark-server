@@ -2,6 +2,7 @@
   (:gen-class)
   (:use clojure.contrib.server-socket)
   (:require [clojure.tools.nrepl :as nrepl])
+  (:require [clojure.contrib.java-utils :as java-utils])
   (:use clojure.contrib.pprint)
   (:import (jark SystemThreadList))
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
@@ -88,6 +89,9 @@
 (defn get-pid []
   (or (first (.. java.lang.management.ManagementFactory (getRuntimeMXBean) (getName) (split "@")))
       (System/getProperty "pid")))
+
+(defn set-prop [prop val]
+  (java-utils/set-system-properties {prop val}))
 
 (defn -main [port]
   (create-repl-server (random-port))
