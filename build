@@ -15,7 +15,3 @@ if [ $? != 0 ]; then
 fi
 echo "Getting dependencies.."
 lein deps && lein jar
-
-
-
-
