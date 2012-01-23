@@ -91,24 +91,31 @@
 (defn apply-fn [n f & args]
   (apply (resolve (symbol (str n "/" f))) args))
 
+(defn- load-module [module]
+  (try
+    (do (require-ns module)
+      true)
+    (catch FileNotFoundException e
+      (do
+        (println "jark: No such module" module)
+        nil))))
+
+(defn- resolve-cmd [module command]
+  (resolve (symbol (str module "/" command))))
+
 (defn dispatch-module-cmd
   ([printer module]
-   (try
-     (require-ns module)
-     (printer (help module))
-     (catch FileNotFoundException e (println "jark: No such module" module))))
+   (when (load-module module)
+     (printer (help module))))
 
   ([printer module command & args]
    (if (or (= (first args) "help") (= command "help"))
      (explicit-help module command)
-     (try
-       (do
-         (require-ns module)
-         (let [ret (apply (resolve (symbol (str module "/" command))) args)]
-           (when ret (printer ret))))
-       (catch FileNotFoundException e (println "jark: No such module" module))
-       ;(catch IllegalArgumentException e (help module command))
-       (catch NullPointerException e (println module ": No such command" command))))))
+     (when (load-module module)
+       (if-let [cmd (resolve-cmd module command)]
+         (if-let [ret (apply cmd args)]
+           (printer ret))
+         (println module ": No such command" command))))))
 
 (def dispatch
   (partial dispatch-module-cmd jark.pp/pp-form))
