@@ -12,22 +12,29 @@
 (defn- namespaces []
   (find-namespaces-on-classpath))
 
+(defn- searched-namespaces []
+  (let [nss (namespaces)]
+    (if (> (count nss) 0)
+      nss
+      (map ns-name (all-ns)))))
+
 (defn- starting-with [module]
-  (if (= (count (namespaces)) 0)
-    (sort (filter #(. (str %) startsWith module) (namespaces)))
-    (sort (filter #(. (str %) startsWith module) (map #(ns-name %) (all-ns))))))
+  (sort (filter #(. (str %) startsWith module) (searched-namespaces))))
+
+(defn- containing-str [module]
+  (sort (filter #(. (str %) contains module) (searched-namespaces))))
 
 (defn list
   "List all namespaces in the classpath. Optionally takes a namespace prefix"
   ([]
-     (sort (namespaces)))
+   (sort (namespaces)))
   ([module]
-     (starting-with module)))
+   (starting-with (str module "."))))
 
 (defn find
   "Find all namespaces containing the given name"
   [module]
-  (starting-with module))
+  (containing-str module))
 
 (defn load-clj
   "Loads the given clj file, and adds relative classpath"
@@ -61,11 +68,13 @@
 
 (defn help
   ([n]
-     (require-ns n)
-     (into {} (map #(vector % (fn-doc n %)) (fns n))))
-  
+   (println n)
+   (require-ns n)
+   (into {} (map #(vector % (fn-doc n %)) (fns n))))
+
   ([n f]
-     (fn-usage n f)))
+   (println n "." f)
+   (fn-usage n f)))
 
 (defn about
   [n]
@@ -74,6 +83,7 @@
                 (cl-format true "~{~A ~}" p))))
 
 (defn explicit-help [n f]
+  (println "explicit help" n "." f)
   (if (= f "help")
     (help n)
     (help n f)))
@@ -81,50 +91,33 @@
 (defn apply-fn [n f & args]
   (apply (resolve (symbol (str n "/" f))) args))
 
-(defn dispatch-ns
-  [n]
-  (try
-    (require-ns n)
-    (help n)
-    (catch FileNotFoundException e (println "No such module" e))))
+(defn dispatch-module-cmd
+  ([printer module]
+   (try
+     (require-ns module)
+     (printer (help module))
+     (catch FileNotFoundException e (println "jark: No such module" module))))
 
-(defn dispatch
-  "Dispatches to the right Namespace, Function and Args"
-  ([n]
-     (jark.pp/pp-form (dispatch-ns n)))
-  ([n f & args]
-     (if (or (= (first args) "help") (= f "help"))
-       (explicit-help n f)
+  ([printer module command & args]
+   (if (or (= (first args) "help") (= command "help"))
+     (explicit-help module command)
+     (try
        (do
-         (require-ns n)
-         (try
-           (let [ret (apply (resolve (symbol (str n "/" f))) args)]
-             (when ret
-               (jark.pp/pp-form ret)))
-           (catch IllegalArgumentException e (help n f))
-           (catch NullPointerException e (println "No such command")))))))
+         (require-ns module)
+         (let [ret (apply (resolve (symbol (str module "/" command))) args)]
+           (when ret (printer ret))))
+       (catch FileNotFoundException e (println "jark: No such module" module))
+       (catch IllegalArgumentException e (help module command))
+       (catch NullPointerException e (println module ": No such command" command))))))
+
+(def dispatch
+  (partial dispatch-module-cmd jark.pp/pp-form))
+
+(def cli-json
+  (partial dispatch-module-cmd json-str))
 
 (defn run
   "Runs the class/ns containing a -main function"
   [main-ns & args]
   (require-ns main-ns)
   (apply (resolve (symbol (str main-ns "/-main"))) args))
-
-(defn cli-json
-  "Run the cli interface for any namespace and return json"
-  ([module]
-     (try
-       (require-ns module)
-       (help module)
-       (catch FileNotFoundException e (println "No such module" e))))
-  ([module command & args]
-     (if (or (= (first args) "help") (= command "help"))
-       (explicit-help module command)
-       (do
-         (require-ns module)
-         (try
-           (let [ret (apply (resolve (symbol (str module "/" command))) args)]
-             (when ret (do
-                         (json-str ret))))
-           (catch IllegalArgumentException e (help module command))
-           (catch NullPointerException e (println "No such command")))))))
