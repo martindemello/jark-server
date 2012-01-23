@@ -9,6 +9,7 @@
   (:import (java.util Date))
   (:require jark.ns))
 
+
 (defn used-mem []
   (let [rt (. Runtime getRuntime)]
     (- (. rt totalMemory) (. rt freeMemory))))
@@ -30,8 +31,8 @@
 	(. rt gc)
 	(. Thread yield)
 	(if (and (< i 500)
-	      (< m1 m2))
-	  (recur (used-mem) m1 (inc i))))))
+          (< m1 m2))
+   (recur (used-mem) m1 (inc i))))))
 
 (defn mb [bytes]
   (int (/ bytes (* 1024.0 1024.0))))
@@ -50,25 +51,38 @@
         (recur (inc i))))
     (str "Freed " (mb (- before (used-mem))) " MB of memory")))
 
+(defn- to-mb [x] (str (mb x) " MB"))
+
+(defn divmod [m n] [(quot m n) (rem m n)])
+
+(defn- fmt-time [ms]
+  (let [[r ms] (divmod ms 1000)
+        [r s ] (divmod  r 60)
+        [r m ] (divmod  r 60)
+        [d h ] (divmod  r 24)]
+    (str d "d " h "h " m "m " s "." ms "s")))
+
 (defn stats
   "Display current statistics of the JVM"
   []
-  (let [mx    (ManagementFactory/getRuntimeMXBean)
-        props {"Mem total"    (str (mb (total-mem)) " MB")
-               "Mem used"     (str (mb (used-mem))  " MB")
-               "Mem free"     (str (mb (free-mem))  " MB")
+  (let [mx     (ManagementFactory/getRuntimeMXBean)
+        uptime (.getUptime mx)
+        props {"Mem total"    (to-mb total-mem)
+               "Mem used"     (to-mb used-mem)
+               "Mem free"     (to-mb free-mem)
                "Start time"   (.toString (Date. (.getStartTime mx)))
                "Uptime"       (str
-                               (.toString (mins (.getUptime mx))) "m" " | "
-                               (.toString (secs (.getUptime mx))) "s")}]
+                               (.toString (mins uptime)) "m" " | "
+                               (.toString (secs uptime)) "s")}]
     props))
 
 (defn uptime
   "Display uptime of the JVM"
   []
-  (let [mx    (ManagementFactory/getRuntimeMXBean)
-        uptime (str (.toString (.getUptime mx)) "ms")]
-    uptime))
+  (let [mx        (ManagementFactory/getRuntimeMXBean)
+        uptime    (.getUptime mx)
+        uptime-ms (str (.toString uptime) "ms")]
+    (str uptime-ms " (" (fmt-time uptime) ")")))
 
 (defn stop []
   (. System (exit 0)))
@@ -86,8 +100,9 @@
     port))
 
 (defn get-pid []
-  (or (first (.. java.lang.management.ManagementFactory (getRuntimeMXBean) (getName) (split "@")))
-      (System/getProperty "pid")))
+  (or
+    (first (.. java.lang.management.ManagementFactory (getRuntimeMXBean) (getName) (split "@")))
+    (System/getProperty "pid")))
 
 (defn -main [port]
   (create-repl-server (random-port))
