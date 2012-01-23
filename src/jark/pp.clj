@@ -16,6 +16,8 @@
 (defmulti pp-form class)
 
 (defmethod pp-form clojure.lang.PersistentArrayMap [m] (pp-map m))
+
+(defmethod pp-form clojure.lang.PersistentHashMap [m] (pp-map m))
   
 (defmethod pp-form String [s] (println s))
 
