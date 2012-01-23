@@ -77,9 +77,12 @@
 
 (defn dependencies
   "Lists the dependencies for the given package name and version"
-  [library-name version]
-  (let [d (get-library-dependencies library-name version)]
-    (hash-of get-library get-version d)))
+  ([library-name]
+   (dependencies library-name (latest-version library-name)))
+
+  ([library-name version]
+   (let [d (get-library-dependencies library-name version)]
+     (hash-of get-library get-version d))))
 
 (defn versions
   "Lists the available versions for the package on remote repositories"
