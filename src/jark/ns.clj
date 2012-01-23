@@ -107,7 +107,7 @@
          (let [ret (apply (resolve (symbol (str module "/" command))) args)]
            (when ret (printer ret))))
        (catch FileNotFoundException e (println "jark: No such module" module))
-       (catch IllegalArgumentException e (help module command))
+       ;(catch IllegalArgumentException e (help module command))
        (catch NullPointerException e (println module ": No such command" command))))))
 
 (def dispatch
