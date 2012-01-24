@@ -5,6 +5,7 @@
                  [swank-clojure "1.3.0"]
                  [jark/leiningen "2.0.0-SNAPSHOT"]
                  [org.clojure/tools.nrepl "0.0.5"]
+                 [org.thnetos/cd-client "0.3.1"]
                  [recon "0.3.0"]]
 
   :java-source-path "src/jark"

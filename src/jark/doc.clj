@@ -1,40 +1,30 @@
 (ns jark.doc
   (:refer-clojure :exclude [bytes])
   (:use clojure.contrib.json)
-  (:use clojure.contrib.http.agent))
+  (:use clojure.contrib.http.agent)
+  (:require [cd-client.core :as cd]))
 
-(defn- pp-examples [js]
-  (let [ex (:examples js)]
-    (doseq [i ex]
-      (println "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-      (println (:body i)))))
+(defn- search-format [w x]
+  (let [format-string (apply str ["~" w "A~A\n"])]
+  (clojure.pprint/cl-format nil format-string (first x) (second x))))
 
 (defn- pp-search [res]
-  (let [p (into {} (map #(vector (:name %) (:ns %)) res))]
-    p))
+  (let [vs (map #(vector (:name %) (:ns %)) res)
+        w  (apply max (map #(count (first %)) vs))
+        lines (map #(search-format (+ 2 w) %) vs)]
+    (print (apply str lines))))
 
-(defn- pp-comments [res]
-  res)
-
-(defn search [function]
-  (pp-search
-   (read-json
-   (string (http-agent (str "http://api.clojuredocs.org/search/" function))))))
+(defn search [& args]
+  (pp-search (apply cd/search args)))
 
 (defn examples
-  ([sym]
-     (pp-examples (read-json
-                   (string (http-agent (str "http://api.clojuredocs.org/examples/clojure.core/" sym))))))
-
-  ([sym namespace]
-     (pp-examples (read-json
-                   (string (http-agent (str "http://api.clojuredocs.org/examples/" namespace "/" sym)))))))
+  ([function]      (examples "clojure.core" function))
+  ([nspc function] (cd/pr-examples nspc function)))
 
 (defn comments
-  ([sym]
-     (pp-comments (read-json
-                   (string (http-agent (str "http://api.clojuredocs.org/comments/clojure.core/" sym))))))
+  ([function]      (comments "clojure.core" function))
+  ([nspc function] (cd/pr-comments nspc function)))
 
-  ([sym namespace]
-     (pp-comments (read-json
-                   (string (http-agent (str "http://api.clojuredocs.org/comments/" namespace "/" sym)))))))
+(defn see-also
+  ([function]      (see-also "clojure.core" function))
+  ([nspc function] (map :name (cd/see-also nspc function))))
