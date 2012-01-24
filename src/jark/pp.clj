@@ -5,6 +5,19 @@
 (defn pp-plist [p]
   (cl-format true "~{~20A  ~A~%~}" p))
 
+(defn- make-row-format [cols padding]
+  (apply str (conj (map #(str "~" (+ padding %) "A") cols) "\n")))
+
+(defn- format-row [format-string row]
+  (apply clojure.pprint/cl-format (apply conj [nil format-string] row)))
+
+(defn pp-table [padding table]
+  (let [widths (reduce (partial map max)
+                       (map (partial map count) table))
+        format-string (make-row-format widths padding)
+        lines (map #(format-row format-string %) table)]
+    (print (apply str lines))))
+
 (defn pp-map [m]
   (let [p (mapcat #(vector (key %) (val %)) m)]
     (pp-plist p)))
