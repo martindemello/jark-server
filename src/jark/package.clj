@@ -75,6 +75,11 @@
   (let [dep (get-dep d)]
     (:version dep)))
 
+(defn latest-version [library-name]
+  (let [response (get-clojars-list)]
+    (second (last (filter (matches-library library-name)
+                          (read-strings response))))))
+
 (defn dependencies
   "Lists the dependencies for the given package name and version"
   ([library-name]
@@ -98,11 +103,6 @@
         entries  (for [line response :when (.contains line term)]
                    (read-string line))]
     (hash-of-assoc entries)))
-
-(defn latest-version [library-name]
-  (let [response (get-clojars-list)]
-    (second (last (filter (matches-library library-name)
-                          (read-strings response))))))
 
 (defn repo-list []
   (let [repos (merge leiningen.pom/default-repos
