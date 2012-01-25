@@ -8,7 +8,7 @@
 
 ; replace duck-streams/read-lines
 (defn- read-lines [stream]
- line-seq (clojure.java.io/reader stream))
+ (line-seq (clojure.java.io/reader stream)))
 
 (defn- body-seq
   "Returns a lazy-seq of lines from either the input stream
