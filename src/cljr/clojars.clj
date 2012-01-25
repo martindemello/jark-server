@@ -1,12 +1,13 @@
 (ns cljr.clojars
   (:require [clojure.string :as s])
+  (:require clojure.xml)
   (:use [cljr core http]
 	[leiningen.deps :only (deps)]))
 
 
-(def *clojars-repo-url* "http://clojars.org/repo")
-(def *clojars-all-jars-url* (str *clojars-repo-url* "/all-jars.clj"))
-(def *clojars-all-poms-url* (str *clojars-repo-url* "/all-poms.txt"))
+(def ^:dynamic *clojars-repo-url* "http://clojars.org/repo")
+(def ^:dynamic *clojars-all-jars-url* (str *clojars-repo-url* "/all-jars.clj"))
+(def ^:dynamic *clojars-all-poms-url* (str *clojars-repo-url* "/all-poms.txt"))
 
 (defn get-latest-version [library-name]
   (let [response (http-get-text-seq *clojars-all-jars-url*)

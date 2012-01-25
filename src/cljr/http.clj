@@ -1,17 +1,20 @@
 (ns cljr.http
   (:import [java.net URL HttpURLConnection]
 	   [java.io StringReader])
-  (:require [clojure.contrib.duck-streams :as duck]
-	    [clojure.string :as s]))
+  (:require [clojure.string :as s]))
 
 
-(def *connect-timeout* 0)
+(def ^:dynamic *connect-timeout* 0)
+
+; replace duck-streams/read-lines
+(defn- read-lines [stream]
+ line-seq (clojure.java.io/reader stream))
 
 (defn- body-seq
   "Returns a lazy-seq of lines from either the input stream
    or the error stream of connection, whichever is appropriate."
   [^HttpURLConnection connection]
-  (duck/read-lines (or (if (>= (.getResponseCode connection) 400)
+  (read-lines (or (if (>= (.getResponseCode connection) 400)
                          (.getErrorStream connection)
                          (.getInputStream connection))
                        (StringReader. ""))))
