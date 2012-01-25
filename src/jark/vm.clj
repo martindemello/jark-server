@@ -1,8 +1,7 @@
 (ns jark.vm
   (:gen-class)
-  (:use clojure.contrib.server-socket)
+  (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])
-  (:use clojure.contrib.pprint)
   (:import (jark SystemThreadList))
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
   (:import (java.net ServerSocket))

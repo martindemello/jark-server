@@ -1,7 +1,6 @@
 (ns jark.doc
   (:refer-clojure :exclude [bytes])
-  (:use clojure.contrib.json)
-  (:use clojure.contrib.http.agent)
+  (:use clojure.data.json)
   (:use jark.pp)
   (:require [cd-client.core :as cd]))
 

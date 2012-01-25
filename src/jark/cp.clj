@@ -3,7 +3,7 @@
   (:import (java.net URL URLClassLoader))
   (:import (java.lang.reflect Method))
   (:import (java.io File))
-  (:use clojure.contrib.classpath)
+  (:use clojure.java.classpath)
   (:gen-class))
 
 (defn ls

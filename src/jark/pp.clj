@@ -1,5 +1,5 @@
 (ns jark.pp
-  (:use clojure.contrib.pprint)
+  (:use clojure.pprint)
   (:gen-class))
 
 (defn pp-plist [p]
@@ -9,7 +9,7 @@
   (apply str (conj (map #(str "~" (+ padding %) "A") cols) "\n")))
 
 (defn- format-row [format-string row]
-  (apply clojure.pprint/cl-format (apply conj [nil format-string] row)))
+  (apply cl-format (apply conj [nil format-string] row)))
 
 (defn pp-table [padding table]
   (let [widths (reduce (partial map max)

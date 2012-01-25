@@ -1,13 +1,18 @@
 (ns jark.ns
   (:gen-class)
-  (:use clojure.contrib.pprint)
-  (:use clojure.contrib.ns-utils)
-  (:use clojure.contrib.find-namespaces)
   (:refer-clojure :exclude [list find alias])
   (:import (java.io File FileNotFoundException))
   (:require jark.cp)
   (:require jark.pp)
-  (:use clojure.contrib.json))
+  (:use clojure.pprint)
+  (:use clojure.tools.namespace)
+  (:use clojure.data.json))
+
+; inlining from clojure.contrib.ns-utils
+(defn ns-vars
+  "Returns a sorted seq of symbols naming public vars in a namespace"
+  [ns]
+  (sort (map first (ns-publics ns))))
 
 (defn- namespaces []
   (find-namespaces-on-classpath))
