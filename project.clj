@@ -21,11 +21,10 @@
         jark.cp
         jark.ns
         jark.swank
-        jark.pp
         jark.doc
         jark.package
+        jark.lein
         cljr.core
         cljr.clojars
-        jark.lein
-        ])
+        nrepl.pp])
 

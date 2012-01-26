@@ -1,7 +1,7 @@
 (ns jark.doc
   (:refer-clojure :exclude [bytes])
   (:use clojure.data.json)
-  (:use jark.pp)
+  (:use nrepl.pp)
   (:require [cd-client.core :as cd]))
 
 (defn- pp-search [res]

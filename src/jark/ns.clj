@@ -3,7 +3,7 @@
   (:refer-clojure :exclude [list find alias])
   (:import (java.io File FileNotFoundException))
   (:require jark.cp)
-  (:require jark.pp)
+  (:require nrepl.pp)
   (:use clojure.pprint)
   (:use clojure.tools.namespace)
   (:use clojure.data.json))
@@ -123,7 +123,7 @@
          (println module ": No such command" command))))))
 
 (def dispatch
-  (partial dispatch-module-cmd jark.pp/pp-form))
+  (partial dispatch-module-cmd nrepl.pp/pp-form))
 
 (def cli-json
   (partial dispatch-module-cmd json-str))
