@@ -38,8 +38,9 @@
   (require-ns n)
   (let [namespace (symbol n)
         vars      (vec (ns-vars namespace))
-        fns-list  (filter #(fun? %) vars)]
-    (sort fns-list)))
+        fns-list  (filter #(fun? %) vars)
+        filtered-fns (filter (complement #(.startsWith % "-main")) (map #(.toString %) fns-list))]
+    (sort filtered-fns)))
 
 (defn fn-args [n f]
   (nthnext

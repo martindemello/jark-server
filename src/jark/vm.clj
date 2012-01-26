@@ -39,9 +39,6 @@
         uptime-ms (str (.toString uptime) "ms")]
     (str uptime-ms " (" (utils/fmt-time uptime) ")")))
 
-(defn stop []
-  (. System (exit 0)))
-
 (defn threads
   "Display all running threads"
   []
@@ -52,6 +49,7 @@
   (or
     (first (.. java.lang.management.ManagementFactory (getRuntimeMXBean) (getName) (split "@")))
     (System/getProperty "pid")))
+
 
 (defn -main [port]
   (create-repl-server (utils/random-port))

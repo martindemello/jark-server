@@ -57,3 +57,5 @@
     (.close s)
     port))
 
+(defn stop []
+  (. System (exit 0)))
