@@ -17,6 +17,9 @@
 
   :java-source-path "java"
   :aot [leiningen.pom
+        jark.utils.ns
+        jark.utils.vm
+        jark.utils.pp
         jark.vm
         jark.cp
         jark.ns
@@ -25,6 +28,5 @@
         jark.package
         jark.lein
         cljr.core
-        cljr.clojars
-        nrepl.pp])
+        cljr.clojars])
 
