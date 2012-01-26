@@ -134,3 +134,6 @@
   (require-ns main-ns)
   (apply (resolve (symbol (str main-ns "/-main"))) args))
 
+(defn server-plugins []
+  (let [m (filter #(.startsWith % "jark") (map #(.toString %) (namespaces)))]
+    (sort (map #((clojure.string/split % #"\.") 1) m))))
