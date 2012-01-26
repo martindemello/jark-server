@@ -2,7 +2,7 @@
   (:gen-class)
   (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])
-  (:import (jark SystemThreadList))
+  (:import (threads SystemThreadList))
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
   (:import (java.net ServerSocket))
   (:import (java.util Date))

@@ -1,5 +1,6 @@
 (ns jark.cp
   (:use [clojure.string :only (split)])
+  (:refer-clojure :exclude [list])
   (:import (java.net URL URLClassLoader))
   (:import (java.lang.reflect Method))
   (:import (java.io File))
@@ -11,7 +12,9 @@
   []
   (let [urls (seq (.getURLs (java.lang.ClassLoader/getSystemClassLoader)))]
     (map (memfn toString) urls))) 
-  
+
+(defn list [] (ls))
+
 (defn add
   "Adds an entry to CLASSPATH, dynamically"
   [#^String jarpath] 
