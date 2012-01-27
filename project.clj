@@ -20,6 +20,7 @@
         jark.utils.ns
         jark.utils.vm
         jark.utils.pp
+        jark.utils.package
         jark.vm
         jark.cp
         jark.ns
