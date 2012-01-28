@@ -28,13 +28,16 @@
 (defn stat
   "Display JVM runtime stats"
   []
-  (let [mx     (ManagementFactory/getRuntimeMXBean)
-        uptime (.getUptime mx)
+  (let [mx      (ManagementFactory/getRuntimeMXBean)
+        gmxs    (ManagementFactory/getGarbageCollectorMXBeans)
+        cmx     (ManagementFactory/getCompilationMXBean)
         props {"Heap Mem Total"    (utils/to-mb (utils/total-mem))
                "Heap Mem Used"     (utils/to-mb (utils/used-mem))
                "Heap Mem Free"     (utils/to-mb (utils/free-mem))
-               "Start Time"   (.toString (Date. (.getStartTime mx)))
-               "Uptime"       (utils/uptime mx)}]
+               "GC Interval"       (map #(str (.getName %) ":" (.getCollectionTime %)) gmxs)
+               "JIT Name"               (.getName cmx)
+               "JIT Time"  (str (utils/secs (.getTotalCompilationTime cmx)) "s")
+               "Uptime"            (utils/uptime mx)}]
     props))
 
 (defn threads
@@ -67,3 +70,7 @@
   "Displays the present working directory of the JVM. Sets it if given a path"
   ([]     (. (java.io.File. ".") getCanonicalPath))
   ([path] "Oops. Cannot set the PWD, yet"))
+
+(defn handle-system-exit
+  "Handle system exits from code. System/exit should not stop the server/vm"
+  [])
