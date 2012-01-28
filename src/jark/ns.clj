@@ -1,7 +1,7 @@
 (ns jark.ns
   (:gen-class)
   (:require [jark.utils.ns :as utils])
-  (:refer-clojure :exclude [list find alias])
+  (:refer-clojure :exclude [list find alias load])
   (:import (java.io File FileNotFoundException))
   (:require jark.cp))
 
@@ -17,7 +17,7 @@
   [module]
   (utils/containing-str module))
 
-(defn load-clj
+(defn load
   "Loads the given clj file, and adds relative classpath"
   [file]
   (let [basename (.getParentFile (File. file))]

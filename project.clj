@@ -15,4 +15,6 @@
                  [recon "0.3.0"]]
 
   :java-source-path "java"
-  :aot [jark.server])
+  :aot [jark.server
+        jark.plugin
+        leiningen.pom])

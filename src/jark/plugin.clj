@@ -1,7 +1,9 @@
 (ns jark.plugin
   (:gen-class)
   (:refer-clojure :exclude [list find alias load])
-  (:require jark.utils.ns))
+  (:require jark.utils.ns)
+  (:import (java.io File FileNotFoundException))
+  (:require jark.cp))
 
 (defn list
   "List all loaded plugins"
@@ -14,4 +16,7 @@
 
 (defn load
   "Load a plugin"
-  [path])
+  [plugin]
+  (let [basename (.getParentFile (File. plugin))]
+    (jark.cp/add (.toString basename)))
+  (load-file plugin))

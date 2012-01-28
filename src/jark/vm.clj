@@ -30,9 +30,9 @@
   []
   (let [mx     (ManagementFactory/getRuntimeMXBean)
         uptime (.getUptime mx)
-        props {"Mem Total"    (utils/to-mb (utils/total-mem))
-               "Mem Used"     (utils/to-mb (utils/used-mem))
-               "Mem Free"     (utils/to-mb (utils/free-mem))
+        props {"Heap Mem Total"    (utils/to-mb (utils/total-mem))
+               "Heap Mem Used"     (utils/to-mb (utils/used-mem))
+               "Heap Mem Free"     (utils/to-mb (utils/free-mem))
                "Start Time"   (.toString (Date. (.getStartTime mx)))
                "Uptime"       (utils/uptime mx)}]
     props))
