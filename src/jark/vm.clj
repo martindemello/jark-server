@@ -31,12 +31,14 @@
   (let [mx      (ManagementFactory/getRuntimeMXBean)
         gmxs    (ManagementFactory/getGarbageCollectorMXBeans)
         cmx     (ManagementFactory/getCompilationMXBean)
-        props {"Heap Mem Total"    (utils/to-mb (utils/total-mem))
+        omx     (ManagementFactory/getOperatingSystemMXBean)
+        props {"Load Average"      (.getSystemLoadAverage omx)
+               "Heap Mem Total"    (utils/to-mb (utils/total-mem))
                "Heap Mem Used"     (utils/to-mb (utils/used-mem))
                "Heap Mem Free"     (utils/to-mb (utils/free-mem))
                "GC Interval"       (map #(str (.getName %) ":" (.getCollectionTime %)) gmxs)
-               "JIT Name"               (.getName cmx)
-               "JIT Time"  (str (utils/secs (.getTotalCompilationTime cmx)) "s")
+               "JIT Name"          (.getName cmx)
+               "Processors"        (.getAvailableProcessors omx)
                "Uptime"            (utils/uptime mx)}]
     props))
 
