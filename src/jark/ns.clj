@@ -14,12 +14,14 @@
 
 (defn find
   "Find all namespaces containing the given name"
-  [module]
-  (utils/containing-str module))
+  ([] "Usage: jark ns find PATTERN")
+  ([module]
+     (utils/containing-str module)))
 
 (defn load
   "Loads the given clj file, and adds relative classpath"
-  [file]
-  (let [basename (.getParentFile (File. file))]
-    (jark.cp/add (.toString basename)))
-  (load-file file))
+  ([] "Usage: jark ns load FILE")
+  ([file]
+     (let [basename (.getParentFile (File. file))]
+       (jark.cp/add (.toString basename)))
+     (load-file file)))

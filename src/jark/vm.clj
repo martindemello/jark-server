@@ -71,8 +71,5 @@
 (defn pwd
   "Displays the present working directory of the JVM. Sets it if given a path"
   ([]     (. (java.io.File. ".") getCanonicalPath))
-  ([path] "Oops. Cannot set the PWD, yet"))
-
-(defn handle-system-exit
-  "Handle system exits from code. System/exit should not stop the server/vm"
-  [])
+  ([path]
+     "Oops. Cannot set the PWD, yet"))

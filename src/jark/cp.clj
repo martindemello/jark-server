@@ -17,18 +17,14 @@
 
 (defn add
   "Adds an entry to CLASSPATH, dynamically"
-  [#^String jarpath] 
- (let [#^URL url   (.. (File. jarpath) toURI toURL) 
-       cls         (. (URLClassLoader. (into-array URL [])) getClass) 
-       acls        (into-array Class [(. url getClass)]) 
-       aobj        (into-array Object [url]) 
-       #^Method m  (. cls getDeclaredMethod "addURL" acls)]
-   (doto m
-     (.setAccessible true) 
-     (.invoke (ClassLoader/getSystemClassLoader) aobj))
-   nil))
-
-(defn exists?
-  "Checks if the given entry exists in CLASSPATH"
-  [path]
-  (some #(= path %) (ls)))
+  ([] "Usage: jark cp add PATH(s)")
+  ([#^String jarpath] 
+     (let [#^URL url   (.. (File. jarpath) toURI toURL) 
+           cls         (. (URLClassLoader. (into-array URL [])) getClass) 
+           acls        (into-array Class [(. url getClass)]) 
+           aobj        (into-array Object [url]) 
+           #^Method m  (. cls getDeclaredMethod "addURL" acls)]
+       (doto m
+         (.setAccessible true) 
+         (.invoke (ClassLoader/getSystemClassLoader) aobj))
+       nil)))

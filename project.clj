@@ -10,11 +10,9 @@
                  [server-socket "1.0.0"]
 
                  [swank-clojure "1.3.0"]
-                 [jark/leiningen "2.0.0-SNAPSHOT"]
-                 [org.clojure/tools.nrepl "0.0.5"]
-                 [recon "0.3.0"]]
+                 [org.clojure/tools.nrepl "0.0.5"]]
 
   :java-source-path "java"
   :aot [jark.server
-        jark.plugin
-        leiningen.pom])
+        jark.plugin])
+
