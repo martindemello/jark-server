@@ -3,7 +3,7 @@
   (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
-  (:import (java.net ServerSocket))
+  (:import (java.net ServerSocket NetworkInterface))
   (:import (java.util Date))
   (:require jark.ns))
 
@@ -51,11 +51,15 @@
         [d h ] (divmod  r 24)]
     (str d "d " h "h " m "m " s "." ms "s")))
 
-(defn random-port []
-  (let [s     (new ServerSocket 0)
-        port  (.getLocalPort s)]
-    (.close s)
-    port))
+(defn local-addresses []
+  (->> (java.net.NetworkInterface/getNetworkInterfaces)
+       enumeration-seq
+       (map bean)
+       (filter (complement :loopback))
+       (mapcat :interfaceAddresses)
+       (map #(.. % (getAddress) (getHostAddress)))))
 
-(defn stop []
-  (. System (exit 0)))
+(defn uptime [mx]
+  (let [uptime    (.getUptime mx)
+        uptime-ms (str (.toString uptime) "ms")]
+    (str uptime-ms " (" (fmt-time uptime) ")")))

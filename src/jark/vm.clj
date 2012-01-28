@@ -9,7 +9,9 @@
   (:import (java.util Date))
   (:require jark.ns))
 
-(defn gc []
+(defn gc
+  "Run Garbage Collection on the JVM"
+  []
   (let [before (utils/used-mem)]
     (loop [i 0]
       (utils/run-gc)
@@ -17,27 +19,23 @@
         (recur (inc i))))
     (str "Freed " (utils/mb (- before (utils/used-mem))) " MB of memory")))
 
-(defn stats
-  "Display current statistics of the JVM"
-  []
-  (let [mx     (ManagementFactory/getRuntimeMXBean)
-        uptime (.getUptime mx)
-        props {"Mem total"    (utils/to-mb (utils/total-mem))
-               "Mem used"     (utils/to-mb (utils/used-mem))
-               "Mem free"     (utils/to-mb (utils/free-mem))
-               "Start time"   (.toString (Date. (.getStartTime mx)))
-               "Uptime"       (str
-                               (.toString (utils/mins uptime)) "m" " | "
-                               (.toString (utils/secs uptime)) "s")}]
-    props))
-
 (defn uptime
   "Display uptime of the JVM"
   []
-  (let [mx        (ManagementFactory/getRuntimeMXBean)
-        uptime    (.getUptime mx)
-        uptime-ms (str (.toString uptime) "ms")]
-    (str uptime-ms " (" (utils/fmt-time uptime) ")")))
+  (let [mx        (ManagementFactory/getRuntimeMXBean)]
+    (utils/uptime mx)))
+
+(defn stat
+  "Display JVM runtime stats"
+  []
+  (let [mx     (ManagementFactory/getRuntimeMXBean)
+        uptime (.getUptime mx)
+        props {"Mem Total"    (utils/to-mb (utils/total-mem))
+               "Mem Used"     (utils/to-mb (utils/used-mem))
+               "Mem Free"     (utils/to-mb (utils/free-mem))
+               "Start Time"   (.toString (Date. (.getStartTime mx)))
+               "Uptime"       (utils/uptime mx)}]
+    props))
 
 (defn threads
   "Display all running threads"
@@ -45,13 +43,27 @@
   (let [stl (SystemThreadList.)]
     (map #(.getName %) (.getAllThreads stl))))
 
-(defn pid []
+(defn pid
+  "Display the PID of the current JVM"
+  []
   (or
-    (first (.. java.lang.management.ManagementFactory (getRuntimeMXBean) (getName) (split "@")))
-    (System/getProperty "pid")))
+   (first (.. java.lang.management.ManagementFactory
+              (getRuntimeMXBean)
+              (getName)
+              (split "@")))
+   (System/getProperty "pid")))
 
+(defn info
+  "Display JVM System information"
+  []
+  (sort (map #(.toString %) (System/getProperties))))
 
-(defn -main [port]
-  (create-repl-server (utils/random-port))
-  (nrepl/start-server (Integer. port))
-  (System/setSecurityManager nil))
+(defn version
+  "Display JVM version"
+  []
+  (System/getProperty "java.vm.name"))
+
+(defn pwd
+  "Displays the present working directory of the JVM. Sets it if given a path"
+  ([]     (. (java.io.File. ".") getCanonicalPath))
+  ([path] "Oops. Cannot set the PWD, yet"))

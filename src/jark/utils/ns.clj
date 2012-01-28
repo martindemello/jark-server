@@ -3,9 +3,9 @@
   (:import (java.io File FileNotFoundException))
   (:require jark.cp)
   (:require jark.utils.pp)
+  (:require clojure.set)
   (:use clojure.pprint)
-  (:use clojure.tools.namespace)
-  (:use clojure.data.json))
+  (:use clojure.tools.namespace))
 
 ; inlining from clojure.contrib.ns-utils
 (defn ns-vars
@@ -103,13 +103,3 @@
            (printer ret))
          (println module ": No such command" command))))))
 
-(def dispatch
-  (partial dispatch-module-cmd jark.utils.pp/pp-form))
-
-(def cli-json
-     (partial dispatch-module-cmd json-str))
-
-(defn server-plugins []
-  (let [jark-namespaces  (filter #(.startsWith % "jark") (map #(.toString %) (namespaces)))
-        names            (sort (map #((clojure.string/split % #"\.") 1) jark-namespaces))]
-    (filter (complement #(.startsWith % "utils")) names)))

@@ -12,22 +12,7 @@
                  [swank-clojure "1.3.0"]
                  [jark/leiningen "2.0.0-SNAPSHOT"]
                  [org.clojure/tools.nrepl "0.0.5"]
-                 [org.thnetos/cd-client "0.3.1"]
                  [recon "0.3.0"]]
 
   :java-source-path "java"
-  :aot [leiningen.pom
-        jark.utils.ns
-        jark.utils.vm
-        jark.utils.pp
-        jark.utils.package
-        jark.vm
-        jark.cp
-        jark.ns
-        jark.swank
-        jark.doc
-        jark.package
-        jark.lein
-        cljr.core
-        cljr.clojars])
-
+  :aot [jark.server])
