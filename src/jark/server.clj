@@ -1,7 +1,8 @@
 (ns jark.server
   (:gen-class)
-  (:require jark.utils.vm)
-  (:require jark.utils.ns)
+  (:require jark.util.vm)
+  (:require jark.util.ns)
+  (:require jark.util.pp)
   (:use server.socket)
   (:import (java.net ServerSocket))
   (:require [clojure.tools.nrepl :as nrepl])
@@ -17,14 +18,14 @@
     port))
 
 (def dispatch
-     (partial jark.utils.ns/dispatch-module-cmd jark.utils.pp/pp-form))
+     (partial jark.util.ns/dispatch-module-cmd jark.util.pp/pp-form))
 
 (def cli-json
-     (partial jark.utils.ns/dispatch-module-cmd json-str))
+     (partial jark.util.ns/dispatch-module-cmd json-str))
 
 (defn active-ip-address
   []
-  (last (jark.utils.vm/local-addresses)))
+  (last (jark.util.vm/local-addresses)))
 
 (defn info []
   {"PID"  (jark.vm/pid)

@@ -1,6 +1,6 @@
 (ns jark.vm
   (:gen-class)
-  (:require [jark.utils.vm :as utils])
+  (:require jark.util.vm)
   (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])
   (:import (threads SystemThreadList))
@@ -12,18 +12,18 @@
 (defn gc
   "Run Garbage Collection on the JVM"
   []
-  (let [before (utils/used-mem)]
+  (let [before (jark.util.vm/used-mem)]
     (loop [i 0]
-      (utils/run-gc)
+      (jark.util.vm/run-gc)
       (if (< i 4)
         (recur (inc i))))
-    (str "Freed " (utils/mb (- before (utils/used-mem))) " MB of memory")))
+    (str "Freed " (jark.util.vm/mb (- before (jark.util.vm/used-mem))) " MB of memory")))
 
 (defn uptime
   "Display uptime of the JVM"
   []
   (let [mx        (ManagementFactory/getRuntimeMXBean)]
-    (utils/uptime mx)))
+    (jark.util.vm/uptime mx)))
 
 (defn stat
   "Display JVM runtime stats"
@@ -33,13 +33,13 @@
         cmx     (ManagementFactory/getCompilationMXBean)
         omx     (ManagementFactory/getOperatingSystemMXBean)
         props {"Load Average"      (.getSystemLoadAverage omx)
-               "Heap Mem Total"    (utils/to-mb (utils/total-mem))
-               "Heap Mem Used"     (utils/to-mb (utils/used-mem))
-               "Heap Mem Free"     (utils/to-mb (utils/free-mem))
+               "Heap Mem Total"    (jark.util.vm/to-mb (jark.util.vm/total-mem))
+               "Heap Mem Used"     (jark.util.vm/to-mb (jark.util.vm/used-mem))
+               "Heap Mem Free"     (jark.util.vm/to-mb (jark.util.vm/free-mem))
                "GC Interval"       (map #(str (.getName %) ":" (.getCollectionTime %)) gmxs)
                "JIT Name"          (.getName cmx)
                "Processors"        (.getAvailableProcessors omx)
-               "Uptime"            (utils/uptime mx)}]
+               "Uptime"            (jark.util.vm/uptime mx)}]
     props))
 
 (defn threads

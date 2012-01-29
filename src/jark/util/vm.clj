@@ -1,4 +1,4 @@
-(ns jark.utils.vm
+(ns jark.util.vm
   (:gen-class)
   (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])

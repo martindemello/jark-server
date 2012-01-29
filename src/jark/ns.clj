@@ -1,6 +1,6 @@
 (ns jark.ns
   (:gen-class)
-  (:require [jark.utils.ns :as utils])
+  (:require jark.util.ns)
   (:refer-clojure :exclude [list find alias load])
   (:import (java.io File FileNotFoundException))
   (:require jark.cp))
@@ -8,15 +8,15 @@
 (defn list
   "List all namespaces in the classpath. Optionally takes a namespace prefix"
   ([]
-   (sort (utils/namespaces)))
+   (sort (jark.util.ns/namespaces)))
   ([module]
-   (utils/starting-with (str module "."))))
+   (jark.util.ns/starting-with (str module "."))))
 
 (defn find
   "Find all namespaces containing the given name"
   ([] "Usage: jark ns find PATTERN")
   ([module]
-     (utils/containing-str module)))
+     (jark.util.ns/containing-str module)))
 
 (defn load
   "Loads the given clj file, and adds relative classpath"
