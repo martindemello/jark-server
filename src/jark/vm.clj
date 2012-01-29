@@ -69,7 +69,7 @@
   (System/getProperty "java.vm.name"))
 
 (defn pwd
-  "Displays the present working directory of the JVM. Sets it if given a path"
+  "Display the present working directory of the JVM. Set it if given a path"
   ([]     (. (java.io.File. ".") getCanonicalPath))
   ([path]
      "Oops. Cannot set the PWD, yet"))

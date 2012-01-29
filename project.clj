@@ -15,4 +15,3 @@
   :java-source-path "java"
   :aot [jark.server
         jark.plugin])
-
