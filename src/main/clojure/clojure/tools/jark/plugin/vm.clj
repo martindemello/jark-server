@@ -3,7 +3,7 @@
   (:require [clojure.tools.jark.util.vm :as util.vm])
   (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])
-  (:import (threads SystemThreadList))
+  (:import (clojure.tools.jark.jvm SystemThreadList))
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
   (:import (java.net ServerSocket))
   (:import (java.util Date)))
