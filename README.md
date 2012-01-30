@@ -3,7 +3,7 @@
 
 clojure.tools.jark
 
-Jark is a tool to run a persistent JVM daemon and provide a set of utilities to interact with it. 
+Jark is a tool to run clojure code on the JVM, interactively and remotely.
 It has 2 components - a client written in OCaml and a server written in Clojure/Java. The client is compiled to native code and is extremely tiny (~300K). 
 The client uses the nREPL protocol to transfer clojure datastructures across the wire. 
 
@@ -35,10 +35,11 @@ Currently, the standalone version is packaged with clojure-1.3. To install with 
 
 ## BASIC USAGE
 
-    jark server start
+    jark [-p PORT] [-j JVM-OPTS] server start
     jark [-h HOST -p PORT] cp add <CLASSPATH>
     jark [-h HOST -p PORT] cp list
     jark [-h HOST -p PORT] vm stat
+    jark [-h HOST -p PORT] vm threads [--tree]
     jark [-h HOST -p PORT] ns find <PATTERN>
     jark [-h HOST -p PORT] ns load <FILE>
     jark [-h HOST -p PORT] repl
