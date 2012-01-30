@@ -19,8 +19,7 @@ Jark is a tool to run a persistent JVM daemon and provide a set of utilities to 
 
 # Installing the client 
 
-Download the appropriate client binary for your platform from "downloads page":/jark/downloads.html
-Untar and copy the jark-0.4-`platform` script to PATH/jark.
+Download the appropriate client binary for your platform from (http://icylisper.in/jark/downloads.html)[http://icylisper.in/jark/downloads.html].
 Currently, there are 32-bit and 64-bit binaries for MacOSX, GNU/Linux and Windows.
 
 # Installing the Server
@@ -38,6 +37,7 @@ Currently, there are 32-bit and 64-bit binaries for MacOSX, GNU/Linux and Window
     jark [-h HOST -p PORT] vm stat
     jark [-h HOST -p PORT] ns find <PATTERN>
     jark [-h HOST -p PORT] ns load <FILE>
+    jark [-h HOST -p PORT] repl
     and more ...
     jark <NAMESPACE> <FUNCTION> <ARGS>
     and more ...
