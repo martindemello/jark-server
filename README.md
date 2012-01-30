@@ -3,35 +3,38 @@
 
 clojure.tools.jark
 
-Jark is a tool to run a persistent JVM daemon and provide a set of utilities to interact with it.
+Jark is a tool to run a persistent JVM daemon and provide a set of utilities to interact with it. It has 2 components - a client written in OCaml and a server written in Clojure/Java. The client is compiled to native code and is extremely tiny (~300K). 
+The client uses the nREPL protocol to transfer clojure datastructures across the wire. 
 
-# Core Features
+## GOALS
 
 * Interactive 
 * Lightweight and can be used by Editors/IDEs.
-* Cross-platform and OS agnostic
+* OS agnostic
 * Server-side plugins
 * Secure
 * Embeddable Server
-* Easy-to-deploy and build
 * Interoperable with existing clojure tools (lein, cljr etc)
+* A nailgun replacement that is secure, faster and clojure-aware.
 
+## INSTALLATION
 
-# Installing the client 
+## Client
 
 Download the appropriate client binary for your platform from (http://icylisper.in/jark/downloads.html)[http://icylisper.in/jark/downloads.html].
-Currently, there are 32-bit and 64-bit binaries for MacOSX, GNU/Linux and Windows.
+Currently, there are 32-bit and 64-bit binaries for MacOSX, GNU/Linux and Windows. 
 
-# Installing the Server
+### Server
 
-    jark server install [--standalone=<true|false> (default:true)
+    jark [--standalone=<true|false> (default:true)] server install 
 
-# Basic Usage
+Currently, the standalone version is packaged with clojure-1.3. To install with clojure-1.2.x do:
+           
+    jark --standalone=false --clojure-version=1.2.x server install
+
+## BASIC USAGE
 
     jark server start
-
-## Plugins
-
     jark [-h HOST -p PORT] cp add <CLASSPATH>
     jark [-h HOST -p PORT] cp list
     jark [-h HOST -p PORT] vm stat
@@ -41,8 +44,27 @@ Currently, there are 32-bit and 64-bit binaries for MacOSX, GNU/Linux and Window
     and more ...
     jark <NAMESPACE> <FUNCTION> <ARGS>
     and more ...
+    jark server stop
 
 Default HOST is localhost and default port is 9000
+
+# FEATURES 
+
+* REPL commands `/vm stat`, `/server info`, '/debug on|off` ..type `/help` in jark repl
+* Server-side plugin system. All plugins written in Clojure
+  
+    jark plugin list
+    jark plugin load <path-to-plugin.clj>
+
+* Configurable (Edit $PREFIX/jark.conf)
+* Remote JVM Performance monitoring (`jark vm stat`)
+* Dynamically add classpath(s) (`jark cp add`)
+* Remote Scripting (using the #! operator)
+* Output JSON :
+  All commands output JSON for parsing when passed a `--json` option
+* Embeddable Server:
+  Add [jark/jark-server "0.4-SNAPSHOT"] to project.clj and do a (clojure.tools.jark.server/start PORT) in your code. The jark-client can connect to it.
+* and more ..
     
 ## LICENSE
 
