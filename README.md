@@ -19,9 +19,9 @@ The client uses the nREPL protocol to transfer clojure datastructures across the
 
 ## INSTALLATION
 
-## Client
+### Client
 
-Download the appropriate client binary for your platform from (http://icylisper.in/jark/downloads.html)[http://icylisper.in/jark/downloads.html].
+Download the appropriate client binary for your platform from http://icylisper.in/jark/downloads.html .
 Currently, there are 32-bit and 64-bit binaries for MacOSX, GNU/Linux and Windows. 
 
 ### Server
@@ -51,10 +51,10 @@ Default HOST is localhost and default port is 9000
 # FEATURES 
 
 * REPL commands `/vm stat`, `/server info`, '/debug on|off` ..type `/help` in jark repl
-* Server-side plugin system. All plugins written in Clojure
+* Server-side plugin system. All plugins are written in Clojure
   
-    jark plugin list
-    jark plugin load <path-to-plugin.clj>
+       jark plugin list
+       jark plugin load <path-to-plugin.clj>
 
 * Configurable (Edit $PREFIX/jark.conf)
 * Remote JVM Performance monitoring (`jark vm stat`)
