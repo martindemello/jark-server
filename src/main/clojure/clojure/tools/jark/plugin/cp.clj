@@ -1,5 +1,5 @@
-(ns jark.cp
-  (:require [jark.util.cp :as cp])
+(ns clojure.tools.jark.plugin.cp
+  (:require [clojure.tools.jark.util.cp :as util.cp])
   (:use [clojure.string :only (split)])
   (:refer-clojure :exclude [list])
   (:import (java.net URL URLClassLoader))
@@ -23,18 +23,18 @@
   (not (empty? (filter #(. (str %) contains path) (ls)))))
 
 (defn add
-  "Adds an entry to CLASSPATH, dynamically"
+  "Adds an entry to CLASSPATH"
   ([] "Usage: jark cp add PATH(s)")
   ([#^String path]
      (cond
-      (cp/jar? path) (cp/add path)
-      (cp/dir? path) (let [jars (cp/list-jars path)]
+      (util.cp/jar? path) (util.cp/add path)
+      (util.cp/dir? path) (let [jars (util.cp/list-jars path)]
                        (if (empty? jars)
                          (println "No jars found in directory")
-                         (doseq [jar (cp/list-jars path)]
+                         (doseq [jar (util.cp/list-jars path)]
                            (if (exists? jar)
                              (println (str jar " already exists in classpath"))
-                             (do (cp/add jar)
+                             (do (util.cp/add jar)
                                  (println (str "Added jar " path))))))
-                       (cp/add path))
+                       (util.cp/add path))
       :else "Not a valid path")))

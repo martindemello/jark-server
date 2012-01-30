@@ -1,4 +1,4 @@
-(ns jark.util.cp
+(ns clojure.tools.jark.util.cp
   (:import (java.io File))
   (:import (java.net URL URLClassLoader))
   (:use clojure.java.classpath)

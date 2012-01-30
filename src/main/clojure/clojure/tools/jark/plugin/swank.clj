@@ -1,4 +1,4 @@
-(ns jark.swank
+(ns clojure.tools.jark.plugin.swank
   (:gen-class)
   (:use swank.swank))
 

@@ -1,7 +1,6 @@
-(ns jark.util.ns
+(ns clojure.tools.jark.util.ns
   (:gen-class)
   (:import (java.io File FileNotFoundException))
-  (:require jark.cp)
   (:require clojure.set)
   (:use clojure.pprint)
   (:use clojure.tools.namespace))

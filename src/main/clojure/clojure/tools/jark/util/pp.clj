@@ -1,4 +1,4 @@
-(ns jark.util.pp
+(ns clojure.tools.jark.util.pp
   (:use clojure.pprint)
   (:gen-class))
 

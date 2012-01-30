@@ -1,11 +1,10 @@
-(ns jark.util.vm
+(ns clojure.tools.jark.util.vm
   (:gen-class)
   (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
   (:import (java.net ServerSocket NetworkInterface))
-  (:import (java.util Date))
-  (:require jark.ns))
+  (:import (java.util Date)))
 
 (defn used-mem []
   (let [rt (. Runtime getRuntime)]
@@ -64,3 +63,12 @@
         uptime-ms (str (.toString uptime) "ms")]
     (str uptime-ms " (" (fmt-time uptime) ")")))
 
+(defn pid
+  "Display the PID of the current JVM"
+  []
+  (or
+   (first (.. java.lang.management.ManagementFactory
+              (getRuntimeMXBean)
+              (getName)
+              (split "@")))
+   (System/getProperty "pid")))

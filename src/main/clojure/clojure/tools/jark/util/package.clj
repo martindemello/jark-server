@@ -1,4 +1,4 @@
-(ns jark.util.package
+(ns clojure.tools.jark.util.package
   (:gen-class)
   (:use [cljr core clojars http])
   (:use [leiningen.deps :only (deps)])

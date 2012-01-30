@@ -1,29 +1,28 @@
-(ns jark.vm
+(ns clojure.tools.jark.plugin.vm
   (:gen-class)
-  (:require jark.util.vm)
+  (:require [clojure.tools.jark.util.vm :as util.vm])
   (:use server.socket)
   (:require [clojure.tools.nrepl :as nrepl])
   (:import (threads SystemThreadList))
   (:import (java.lang.management RuntimeMXBean ManagementFactory))
   (:import (java.net ServerSocket))
-  (:import (java.util Date))
-  (:require jark.ns))
+  (:import (java.util Date)))
 
 (defn gc
   "Run Garbage Collection on the JVM"
   []
-  (let [before (jark.util.vm/used-mem)]
+  (let [before (util.vm/used-mem)]
     (loop [i 0]
-      (jark.util.vm/run-gc)
+      (util.vm/run-gc)
       (if (< i 4)
         (recur (inc i))))
-    (str "Freed " (jark.util.vm/mb (- before (jark.util.vm/used-mem))) " MB of memory")))
+    (str "Freed " (util.vm/mb (- before (util.vm/used-mem))) " MB of memory")))
 
 (defn uptime
   "Display uptime of the JVM"
   []
   (let [mx        (ManagementFactory/getRuntimeMXBean)]
-    (jark.util.vm/uptime mx)))
+    (util.vm/uptime mx)))
 
 (defn stat
   "Display JVM runtime stats"
@@ -33,13 +32,13 @@
         cmx     (ManagementFactory/getCompilationMXBean)
         omx     (ManagementFactory/getOperatingSystemMXBean)
         props {"Load Average"      (.getSystemLoadAverage omx)
-               "Heap Mem Total"    (jark.util.vm/to-mb (jark.util.vm/total-mem))
-               "Heap Mem Used"     (jark.util.vm/to-mb (jark.util.vm/used-mem))
-               "Heap Mem Free"     (jark.util.vm/to-mb (jark.util.vm/free-mem))
+               "Heap Mem Total"    (util.vm/to-mb (util.vm/total-mem))
+               "Heap Mem Used"     (util.vm/to-mb (util.vm/used-mem))
+               "Heap Mem Free"     (util.vm/to-mb (util.vm/free-mem))
                "GC Interval"       (map #(str (.getName %) ":" (.getCollectionTime %)) gmxs)
                "JIT Name"          (.getName cmx)
                "Processors"        (.getAvailableProcessors omx)
-               "Uptime"            (jark.util.vm/uptime mx)}]
+               "Uptime"            (util.vm/uptime mx)}]
     props))
 
 (defn threads
@@ -51,12 +50,7 @@
 (defn pid
   "Display the PID of the current JVM"
   []
-  (or
-   (first (.. java.lang.management.ManagementFactory
-              (getRuntimeMXBean)
-              (getName)
-              (split "@")))
-   (System/getProperty "pid")))
+  (util.vm/pid))
 
 (defn info
   "Display JVM System information"

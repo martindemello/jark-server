@@ -9,9 +9,11 @@
                  [clj-http "0.2.7"]
                  [server-socket "1.0.0"]
 
-                 [swank-clojure "1.3.0"]
+                 [swank-clojure "1.4.0"]
                  [org.clojure/tools.nrepl "0.0.5"]]
 
-  :java-source-path "java"
-  :aot [jark.server
-        jark.plugin])
+  :source-path "src/main/clojure"
+  :java-source-path "src/main/java"
+  :java-options {:debug "true"}
+  :aot [clojure.tools.jark.server
+        clojure.tools.jark.plugin])
