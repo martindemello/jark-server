@@ -24,13 +24,13 @@ The client uses the nREPL protocol to transfer clojure data structures over the 
 
 Download the appropriate client binary for your platform:
 
-64-bit:
-MacOSX    : https://github.com/downloads/icylisper/jark-client/jark-0.4-pre-x86_64_macosx.tar.gz
-GNU/Linux : https://github.com/downloads/icylisper/jark-client/jark-0.4-pre-x86_64.tar.gz
-Windows   : Port in progress ..
+64-bit:  
+MacOSX    : https://github.com/downloads/icylisper/jark-client/jark-0.4-pre-x86_64_macosx.tar.gz  
+GNU/Linux : https://github.com/downloads/icylisper/jark-client/jark-0.4-pre-x86_64.tar.gz  
+Windows   : Port in progress ..  
 
-32-bit:
-Port in progress ..
+32-bit:  
+Port in progress ..  
 
 ### Server
 
