@@ -4,8 +4,8 @@
 clojure.tools.jark
 
 Jark is a tool to run clojure code on the JVM, interactively and remotely.
-It has 2 components - a client written in OCaml and a server written in Clojure/Java. The client is compiled to native code and is extremely tiny (~300K). 
-The client uses the nREPL protocol to transfer clojure datastructures across the wire. 
+It has 2 components - a client written in OCaml and a server written in Clojure/Java. The client is compiled to native code and is extremely tiny (~300KB). 
+The client uses the nREPL protocol to transfer clojure data structures over the wire. 
 
 ## GOALS
 
@@ -18,12 +18,19 @@ The client uses the nREPL protocol to transfer clojure datastructures across the
 * Interoperable with existing clojure tools (lein, cljr etc)
 * A nailgun replacement that is secure, faster and clojure-aware.
 
-## INSTALLATION
+## Installation
 
 ### Client
 
-Download the appropriate client binary for your platform from http://icylisper.in/jark/downloads.html 
-Currently, there are 32-bit and 64-bit binaries for MacOSX, GNU/Linux and Windows. 
+Download the appropriate client binary for your platform:
+
+64-bit:
+MacOSX    : https://github.com/downloads/icylisper/jark-client/jark-0.4-pre-x86_64_macosx.tar.gz
+GNU/Linux : https://github.com/downloads/icylisper/jark-client/jark-0.4-pre-x86_64.tar.gz
+Windows   : Port in progress ..
+
+32-bit:
+Port in progress ..
 
 ### Server
 
@@ -33,7 +40,7 @@ Currently, the standalone version is packaged with clojure-1.3. To install with 
            
     jark --standalone=false --clojure-version=1.2.x server install
 
-## BASIC USAGE
+## Basic usage
 
     jark [-p PORT] [-j JVM-OPTS] server start
     jark [-h HOST -p PORT] cp add <CLASSPATH>
@@ -50,7 +57,7 @@ Currently, the standalone version is packaged with clojure-1.3. To install with 
 
 Default HOST is localhost and default port is 9000
 
-# FEATURES 
+# Features 
 
 * REPL commands `/vm stat`, `/server info`, '/debug on|off` ..type `/help` in jark repl
 * Server-side plugin system. All plugins are written in Clojure
@@ -72,6 +79,17 @@ Default HOST is localhost and default port is 9000
         jark -e CLOJURE-EXPRESSION        
 
 * and more ..
+
+## Documentation
+
+https://github.com/icylisper/jark-server/wiki
+
+## Community
+
+User mailing list: https://groups.google.com/group/clojure-jark 
+Dev mailing list : https://groups.google.com/group/clojure-jark-dev
+    
+Catch us on #jark on irc.freenode.net
     
 ## LICENSE
 
