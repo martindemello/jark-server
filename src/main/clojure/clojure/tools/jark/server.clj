@@ -26,6 +26,9 @@
   []
   (last (util.vm/local-addresses)))
 
+(defn pid []
+  (util.vm/pid))
+
 (defn info []
   {"PID"  (util.vm/pid)
    "Host" (active-ip-address)
